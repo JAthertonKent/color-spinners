@@ -39,24 +39,39 @@ $(function() {
       }
     }
 
+    function generateCircles() {
+      var blar = 0
+      for (var point in centers) {
+        changeColor(blar++)
+        var center = centers[point]
+        drawLine(calculateXY(center), center)
+      }
+    }
+
     function gameLoop() {
       i+=1
-      drawLine(calculateXY(center), center)
-      changeColor(0)
-      side = {x:100, y:canvas.height/2}
-      drawLine(calculateXY(side), side)
-      changeColor(2)
+      generateCircles()
       terminationCondition()
+    }
+
+    function generateCenters() {
+      var centers = []
+      for (var i = 0; i < 50; i++) {
+        centers.push({
+          x: Math.floor((Math.random()*canvas.width)+1),
+          y: Math.floor((Math.random()*canvas.height)+1)
+        })
+      }
+      return centers
     }
 
     var canvas = document.getElementById('myCanvas')
     canvas.width  = window.innerWidth;
     canvas.height  = window.innerHeight;
     var context = canvas.getContext('2d')
-    var center = {x:canvas.width/2, y:canvas.height/2}
     var timeInterval = 1000 / 60
     var i = 0
-    var color = '#CC00FF'
 
+    var centers = generateCenters()
     var s = window.setInterval(gameLoop, timeInterval)
 });
