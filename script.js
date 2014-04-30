@@ -8,20 +8,17 @@ $(function() {
       context.closePath()
     }
 
-    function changeRGB(sinDiff) {
+    function changeColor(sinDiff) {
       var newColor = {red:undefined , green:undefined , blue:undefined }
-      var j = 0
+      var offsetMultiplier = 0
+      var frequency = .15
       for (var property in newColor) {
-        colorInt = ~~(Math.sin(.15*i + (j++*sinDiff))*255/2 + 255/2)
+        colorDecimal = Math.sin(frequency*i + (offsetMultiplier++*sinDiff))
+        var colorFloat = colorDecimal*255/2 + 255/2
+        var colorInt = ~~(colorFloat)
         var hex = colorInt.toString(16)
         newColor[property] = ("00" + hex).substring(hex.length)
       }
-
-      return newColor
-    }
-
-    function changeColor(sinDiff) {
-      var newColor = changeRGB(sinDiff)
 
       color = '#' + newColor.red + newColor.green + newColor.blue
       context.strokeStyle = color
@@ -31,32 +28,32 @@ $(function() {
       //  if (i > 6)  clearInterval(s)
     }
 
-    function calculateXY(center) {
-      var r = 100
+    function calculateCircleXY(center) {
+      var radius = 400
       return {
-        x: center.x + r * Math.cos(i+32),
-        y: center.y + r * Math.sin(i+32)
+        x: center.x + radius * Math.cos(i),
+        y: center.y + radius * Math.sin(i)
       }
     }
 
     function generateCircles() {
-      var blar = 0
+      var sinOffset = 2
       for (var point in centers) {
-        changeColor(blar++)
+        changeColor(sinOffset++)
         var center = centers[point]
-        drawLine(calculateXY(center), center)
+        drawLine(calculateCircleXY(center), center)
       }
     }
 
     function gameLoop() {
-      i+=1
+      i++
       generateCircles()
       terminationCondition()
     }
 
     function generateCenters() {
       var centers = []
-      for (var i = 0; i < 50; i++) {
+      for (var i = 0; i < 1; i++) {
         centers.push({
           x: Math.floor((Math.random()*canvas.width)+1),
           y: Math.floor((Math.random()*canvas.height)+1)
