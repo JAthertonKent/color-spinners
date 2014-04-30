@@ -1,4 +1,7 @@
 $(function() {
+    $('#button').click(function() {
+      alert("hey")
+    })
 
     function drawLine(a, b) {
       context.beginPath()
@@ -8,16 +11,23 @@ $(function() {
       context.closePath()
     }
 
-    function changeColor(sinDiff) {
+    function getHexColorComponent(rgbOffset, random) {
+      var frequency = .015
+      var amplitude = 255/2
+      var waveCenter = 255/2
+      var colorDecimal = Math.sin(frequency*i + (rgbOffset*random))
+      var colorFloat = colorDecimal*amplitude + waveCenter
+      var colorInt = ~~(colorFloat)
+      var hex = colorInt.toString(16)
+      return ("00" + hex).substring(hex.length)
+    }
+
+    function changeColor(random) {
       var newColor = {red:undefined , green:undefined , blue:undefined }
-      var offsetMultiplier = 0
-      var frequency = .15
+      var rgbOffset = 0
       for (var property in newColor) {
-        colorDecimal = Math.sin(frequency*i + (offsetMultiplier++*sinDiff))
-        var colorFloat = colorDecimal*255/2 + 255/2
-        var colorInt = ~~(colorFloat)
-        var hex = colorInt.toString(16)
-        newColor[property] = ("00" + hex).substring(hex.length)
+        newColor[property] = getHexColorComponent(rgbOffset, random)
+        rgbOffset++
       }
 
       color = '#' + newColor.red + newColor.green + newColor.blue
@@ -37,10 +47,11 @@ $(function() {
     }
 
     function generateCircles() {
-      var sinOffset = 2
+      var center
+      var random = 0
       for (var point in centers) {
-        changeColor(sinOffset++)
-        var center = centers[point]
+        changeColor(random++)
+        center = centers[point]
         drawLine(calculateCircleXY(center), center)
       }
     }
@@ -53,7 +64,7 @@ $(function() {
 
     function generateCenters() {
       var centers = []
-      for (var i = 0; i < 1; i++) {
+      for (var i = 0; i < 22; i++) {
         centers.push({
           x: Math.floor((Math.random()*canvas.width)+1),
           y: Math.floor((Math.random()*canvas.height)+1)
