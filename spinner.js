@@ -1,37 +1,12 @@
 
-var spinnerManager = function(context) {
-  var that = {}
-
-  that.context = context
-  that.centers = []
-
-  that.generateCircles = function() {
-    var center
-    var random = 0
-    for (var point in that.centers) {
-      center = that.centers[point]
-      center.spin(random++)
-    }
-  }
-
-  that.generateCenters = function(centerNo) {
-    for (var i = 0; i < centerNo; i++) {
-      that.centers.push(spinner({
-        x: Math.floor((Math.random()*WIDTH)+1),
-        y: Math.floor((Math.random()*HEIGHT)+1)
-      }, that.context))
-    }
-  }
-
-  return that
-}
-
-var spinner = function(center, context) {
+var spinner = function(center, context, radius) {
   var that = {}
 
   that.center = center
   that.context = context
   that.iteration = 0
+
+  that.radius = radius
 
   function drawLine(a, b) {
     that.context.beginPath()
@@ -65,10 +40,9 @@ var spinner = function(center, context) {
   }
 
   function calculateCircleXY(center) {
-    var radius = 400
     return {
-      x: that.center.x + radius * Math.cos(that.iteration),
-      y: that.center.y + radius * Math.sin(that.iteration)
+      x: that.center.x + that.radius * Math.cos(that.iteration),
+      y: that.center.y + that.radius * Math.sin(that.iteration)
     }
   }
 

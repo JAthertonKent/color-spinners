@@ -3,7 +3,7 @@ HEIGHT = window.innerHeight;
 
 $(function() {
     $('#button').click(function() {
-      colorCircles.generateCenters(1, canvas.width, canvas.height)
+      colorCircles.generateCenters(1, $('#slide').val())
     })
 
     function gameLoop() {
@@ -15,7 +15,7 @@ $(function() {
     var context = canvas.getContext('2d')
 
     var colorCircles = spinnerManager(context)
-    colorCircles.generateCenters(1)
+    colorCircles.generateCenters(1, $('#slide').val())
 
     var timeInterval = 1000 / 60
     window.setInterval(gameLoop, timeInterval)

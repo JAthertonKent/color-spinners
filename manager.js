@@ -14,12 +14,12 @@ var spinnerManager = function(context) {
     }
   }
 
-  that.generateCenters = function(centerNo) {
-    for (var i = 0; i < centerNo; i++) {
+  that.generateCenters = function(noOfNewCenters, radius) {
+    for (var i = 0; i < noOfNewCenters; i++) {
       that.centers.push(spinner({
         x: Math.floor((Math.random()*WIDTH)+1),
         y: Math.floor((Math.random()*HEIGHT)+1)
-      }, that.context))
+      }, that.context, radius))
     }
   }
 
